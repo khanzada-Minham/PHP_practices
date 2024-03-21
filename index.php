@@ -44,29 +44,60 @@
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+  $name = $_POST['name'];
   $email = $_POST['email'];
-  $password = $_POST['pass'];
-  echo '<div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">Well done! Email:'. $email .'</h4>
-  <p>Password: '. $password .'</p>
-  <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-  <hr>
-  <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-  </div>';
+  $desc = $_POST['desc'];
+
+  // Connecting to the Database
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $database = "contacts";
+  
+  // Create a connection
+  $conn = mysqli_connect($servername, $username, $password, $database);
+  // Die if connection was not successful
+  if (!$conn){
+      die("Sorry we failed to connect: ". mysqli_connect_error());
+  }
+  else{
+      // submint these to a database
+  }
+
+
+  $sql = "INSERT INTO `contactus` (`name`, `email`, `concern`, `date`) VALUES ('$name', '$email', '$desc', current_timestamp());";
+$result = mysqli_query($conn, $sql);
+
+// Add a new trip to the Trip table in the database
+if($result){
+    echo '<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Submited successfully</h4>
+    </div>';
+}
+else{
+    echo "The record was not inserted successfully because of this error ---> ". mysqli_error($conn);
+}
+
+
 }
 ?>
 <div class="container mt-4">
-    <h1>Places Enter Your Email and Password</h1>
+    <h1>Places Enter Your Name Email and Password</h1>
 <form action="/Minham/index.php" method="post">
 <form>
   <div class="mb-3">
-    <label for="email" class="form-label">Email address</label>
-    <input type="email" class="form-control" name= "email" id="email" aria-describedby="emailHelp">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" name= "name" id="name" aria-describedby="emailHelp">
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
   </div>
   <div class="mb-3">
-    <label for="pass" class="form-label">Password</label>
-    <input type="password" class="form-control" id="pass" name= "pass">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" name= "email" id="email" aria-describedby="emailHelp">
+  </div>
+  <div class="mb-3">
+    <label for="desc" class="form-label">Discription</label>
+    <textarea class=form-control name="desc"id="desc" cols="30" rows="10"></textarea>
+    
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
